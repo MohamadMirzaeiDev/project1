@@ -2,6 +2,7 @@ import express , { Application } from 'express';
 import passport from 'passport';
 import mainRoute from './modules/index' ;
 import { connect } from './configs/database';
+import { client } from './configs/redis-config';
 
 const port = process.env.HTTP_PORT || 3002 ;
 const app:Application = express()
@@ -23,5 +24,8 @@ app.listen(port , ()=>{
             return console.log(err.message)
         }
         console.log(info)
+    })
+    client.on('error' , (err)=>{
+        console.log(err) ;
     })
 })

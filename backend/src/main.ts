@@ -1,8 +1,7 @@
 import express , { Application } from 'express';
 import passport from 'passport';
 import mainRoute from './modules/index' ;
-import { connect } from './configs/database';
-import { client } from './configs/redis-config';
+import { connectMongoDB, connectRedis } from './configs/database';
 
 const port = process.env.HTTP_PORT || 3002 ;
 const app:Application = express()
@@ -19,13 +18,16 @@ app.listen(port , ()=>{
     console.clear()
     console.log(process.version)
     console.log(`app runing on port ${port}`);
-    connect((err , info)=>{
+    connectMongoDB((err , info)=>{
         if(err){
             return console.log(err.message)
         }
         console.log(info)
     })
-    client.on('error' , (err)=>{
-        console.log(err) ;
+    connectRedis((err , info)=>{
+        if(err){
+            return console.log(err.message)
+        }
+        console.log(info)
     })
 })

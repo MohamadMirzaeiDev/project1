@@ -1,29 +1,44 @@
-import { IUser } from '../user/schema';
 import userService from '../user/service';
+import { client } from '../../configs/database';
 
 export default new class Service{
 
-    private generateOTP(length: number): string {
+    private generateOTP(length:number):string{
         const digits = '0123456789';
-        let OTP = '';
+        let otp = '';
+      
         for (let i = 0; i < length; i++) {
-          OTP += digits[Math.floor(Math.random() * 10)];
+          otp += digits[Math.floor(Math.random() * 10)];
         }
-        return OTP;
-    }
+      
+        return otp;
+      }
     
-    async phoneNumberLogin(phone_number:string):Promise<IUser | null>{
+    
+    async phoneNumberLogin(phone_number:string):Promise<{} | null>{
         const user = await userService.findByPhoneNumber(phone_number);
 
         if(user){
-            const otp = this.generateOTP(4);
-            console.log('user the authenticated')
-            return await userService.updateUser(user , {otp_code:otp});
+            const otp = this.generateOTP(4)
+            const userOTP = await client.set('userOTP' , user.phone_number+otp)
+            console.log(userOTP)
+            return { otp_code :otp , phone_number : user.phone_number }
         }
-        console.log('user the created')
-        return await userService.createUser({
-            phone_number , 
-            otp_code : this.generateOTP(4)
-        })
-    }    
+
+        const otp = this.generateOTP(4)
+        const newUser = await userService.createUser({phone_number})
+        await client.set('userOTP' , newUser.phone_number+otp)
+        return { otp_code : this.generateOTP(4) , phone_number : newUser.phone_number }
+    }
+    
+    async verifyPhoneNumber(phone_number:string, otp_code:string):Promise<string | null>{
+        const userOTP = await client.get('userOTP');
+
+        if(userOTP == phone_number+otp_code){
+            await client.del('userOTP')
+            return 'ok'
+        }
+
+        return null
+    }
 }

@@ -5,7 +5,6 @@ export interface IUser extends Document {
     name : string 
     username : string 
     phone_number : string
-    otp_code : string 
     email : string
     password : string 
     created_at : Date
@@ -25,10 +24,6 @@ const UserSchema:Schema = new Schema({
         type : String , 
         unique : true ,
         sparse : true 
-    } , 
-    otp_code : {
-        type : String ,
-        default : null 
     } , 
     email : {
         type : String , 

@@ -10,3 +10,16 @@ export async function phoneLogin(req:Request,res:Response){
 
     res.send(result)
 }
+
+
+export async function verifyPhoneNumber(req:Request,res:Response){
+    const { phone_number , otp_code } = req.body ;
+
+    const result = await service.verifyPhoneNumber(phone_number , otp_code);
+
+    if(result){
+        return res.sendStatus(400)
+    }
+
+    res.send(result)
+}

@@ -5,14 +5,14 @@ import { phoneNumberVerify_validate, phoneNumber_validate } from './validator';
 const router = Router();
 
 router.post(
-    '/phoneLogin' ,
+    '/login' ,
     phoneNumber_validate(),
     validate , 
     phoneLogin
 );
 
 router.post(
-    '/verifyPhoneNumber' , 
+    '/verify' , 
     phoneNumberVerify_validate() , 
     validate , 
     verifyPhoneNumber

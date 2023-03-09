@@ -17,7 +17,8 @@ export async function verifyPhoneNumber(req:Request,res:Response){
 
     const result = await service.verifyPhoneNumber(phone_number , otp_code);
 
-    if(result){
+    if(!result){
+        console.log(result)
         return res.sendStatus(400)
     }
 

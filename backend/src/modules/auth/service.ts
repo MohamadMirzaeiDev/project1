@@ -40,10 +40,10 @@ export default new class Service{
         return { otp_code : this.generateOTP(4) , phone_number : newUser.phone_number }
     }
     
-    async verifyPhoneNumber(phone_number:string, otp_code:string):Promise<{access_token : string} | null>{
+    async verifyPhoneNumber(phone_number:string, otp_code:string):Promise<{access_token:string}| null>{
         const cachedOTP = await client.get(phone_number);
-        const user = await userService.findByPhoneNumber(phone_number)
-        
+        const user = await userService.findByPhoneNumber(phone_number);
+
         if(!cachedOTP){
             return null ;
         }

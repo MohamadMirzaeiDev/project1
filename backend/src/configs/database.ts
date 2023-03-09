@@ -7,7 +7,6 @@ export function connectMongoDB(cb:(err:Error | undefined , info:string | undefin
     .then(result=>{
         if(!result){
             cb(new Error('not connect to mongoDB') , undefined)
-            return ;
         }
         cb(undefined , 'connect to mongoDB !')
     })

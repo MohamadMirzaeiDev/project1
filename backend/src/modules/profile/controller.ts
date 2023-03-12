@@ -5,6 +5,6 @@ export function index(req:Request,res:Response){
 }
 
 export function update(req:Request,res:Response){
-    const { name , email , password , username } =  req.body ; 
-    
+    const { name , password , username } =  req.body ; 
 }
+

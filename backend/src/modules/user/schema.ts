@@ -37,10 +37,6 @@ const UserSchema:Schema = new Schema({
         type : Boolean , 
         default : false
     },
-    role: {
-        type : String ,
-        enum : ['customer','driver']
-    }
 }, {timestamps : true });
 
 export const User = model<IUser>('User' , UserSchema);
